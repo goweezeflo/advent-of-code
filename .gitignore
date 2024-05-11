@@ -1,0 +1,6 @@
+# Input files
+*.txt
+
+# JetBrains
+.idea
+*.iml
