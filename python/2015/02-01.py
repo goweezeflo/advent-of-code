@@ -18,17 +18,27 @@ plus 1 square foot of slack, for a total of 43 square feet.
 All numbers in the elves' list are in feet. How many total square feet of wrapping paper should they order?
 """
 
-from helper_functions import read_puzzle_input, logger
+from helper_functions import read_puzzle_input_as_list, logger
 
 
-def day_02_part_1() -> int:
-    list_of_dimensions: list[str] = read_puzzle_input('02-input.txt')
-    total = sum([get_wrapping_paper(dimensions) for dimensions in list_of_dimensions])
+def main() -> None:
+    perform_tests()
+    list_of_box_dimensions: list[str] = read_puzzle_input_as_list('day-02-input.txt')
+    logger.info(day_02_part_1(list_of_box_dimensions))
+
+
+def perform_tests() -> None:
+    assert day_02_part_1(['2x3x4']) == 58
+    assert day_02_part_1(['1x1x10']) == 43
+
+
+def day_02_part_1(list_of_box_dimensions: list[str], *, sep: str = 'x') -> int:
+    total = sum([get_wrapping_paper(box_dimensions, sep=sep) for box_dimensions in list_of_box_dimensions])
     return total
 
 
-def get_wrapping_paper(dimensions: str) -> int:
-    length, width, height = [int(dimension) for dimension in dimensions.split('x')]
+def get_wrapping_paper(box_dimensions: str, *, sep: str) -> int:
+    length, width, height = [int(dimension) for dimension in box_dimensions.split(sep)]
     box_surface: int = get_box_surface_area(length, width, height)
     smallest_side: int = get_smallest_side_area(length, width, height)
     wrapping_paper: int = box_surface + smallest_side
@@ -49,4 +59,4 @@ def get_smallest_side_area(length: int, width: int, height: int) -> int:
 
 
 if __name__ == '__main__':
-    logger.info(day_02_part_1())
+    main()

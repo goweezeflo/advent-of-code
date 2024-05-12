@@ -28,21 +28,31 @@ For example:
 To what floor do the instructions take Santa?
 """
 
-from helper_functions import read_puzzle_input, logger
+from helper_functions import read_puzzle_input_as_string, logger
 
 
-def day_01_part_1() -> int:
-    puzzle_input: list[str] = read_puzzle_input('01-input.txt')
-    instructions: str = puzzle_input[0]
-    current_floor: int = 0
-    up: str = '('
-    down: str = ')'
-    return current_floor + instructions.count(up) - instructions.count(down)
+def main() -> None:
+    perform_tests()
+    instructions: str = read_puzzle_input_as_string('day-01-input.txt')
+    logger.info(day_01_part_1(instructions))
 
 
-def main():
-    result: int = day_01_part_1()
-    logger.info(result)
+def perform_tests() -> None:
+    assert day_01_part_1('(())') == 0
+    assert day_01_part_1('()()') == 0
+    assert day_01_part_1('(((') == 3
+    assert day_01_part_1('(()(()(') == 3
+    assert day_01_part_1('))(((((') == 3
+    assert day_01_part_1('())') == -1
+    assert day_01_part_1('))(') == -1
+    assert day_01_part_1(')))') == -3
+    assert day_01_part_1(')())())') == -3
+
+
+def day_01_part_1(instructions: str) -> int:
+    up_instructions: int = instructions.count('(')
+    down_instructions = instructions.count(')')
+    return up_instructions - down_instructions
 
 
 if __name__ == '__main__':

@@ -12,33 +12,34 @@ For example:
 What is the position of the character that causes Santa to first enter the basement?
 """
 
-from helper_functions import read_puzzle_input, logger
+from helper_functions import read_puzzle_input_as_string, logger
 
 
-def change_floor(char: str, floor: int) -> int:
-    up: str = '('
-    down: str = ')'
-    if char == up:
-        return floor + 1
-    elif char == down:
-        return floor - 1
-    return floor
+def main() -> None:
+    perform_tests()
+    instructions: str = read_puzzle_input_as_string('day-01-input.txt')
+    logger.info(day_01_part_2(instructions))
 
 
-def day_01_part_2() -> int:
-    puzzle_input: list[str] = read_puzzle_input('01-input.txt')
-    instructions: str = puzzle_input[0]
-    current_floor: int = 0
+def perform_tests() -> None:
+    assert day_01_part_2(')') == 1
+    assert day_01_part_2('()())') == 5
+
+
+def day_01_part_2(instructions: str, current_floor: int = 0) -> int:
     for index, char in enumerate(instructions, start=1):
-        current_floor = change_floor(char, current_floor)
+        current_floor += change_floor(char)
         if current_floor < 0:
             return index
     return 0
 
 
-def main():
-    result: int = day_01_part_2()
-    logger.info(result)
+def change_floor(char: str) -> int:
+    if char == '(':
+        return 1  # Move up
+    elif char == ')':
+        return -1  # Move down
+    return 0
 
 
 if __name__ == '__main__':
